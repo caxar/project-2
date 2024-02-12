@@ -50,9 +50,11 @@ const Game = () => {
   }, []);
 
   React.useEffect(() => {
-    cards.every((it: any) => {
-      if (it.matched === true) {
+    cards.every((item: any) => {
+      if (item.matched === true) {
         setShowResult(true);
+      } else {
+        setShowResult(false);
       }
     });
   }, [cards]);
@@ -118,10 +120,13 @@ const Game = () => {
           <div className="game-title text-[35px] font-bold uppercase">
             Мемо Сказки
           </div>
-          <Button onClick={shuffleCards} className="bg-orange-500">
-            Новая игра <TbReload />
+          <Button
+            onClick={shuffleCards}
+            className="bg-orange-500 transition ease-in-out delay-100  hover:scale-110"
+          >
+            Новая игра
           </Button>
-          <div className="text-[18px] mt-2">Ходов: {turns}</div>
+          <div className="text-[18px] mt-2 text-[20px]">Ходов: {turns}</div>
         </div>
         <div className="bottom">
           <Board
