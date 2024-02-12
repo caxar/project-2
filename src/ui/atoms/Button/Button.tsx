@@ -1,12 +1,15 @@
-import s from './Button.module.css'
+import s from "./Button.module.css";
 
 interface ButtonProps {
-  className?: string
-  children?: string | JSX.Element | 'Next'
+  className?: string;
+  children?: string | JSX.Element | "Next";
+  onClick: () => void;
 }
 
-export const Button = ({className, children}: ButtonProps ) => {
+export const Button = ({ className, children, onClick }: ButtonProps) => {
   return (
-    <button className={`${s.root} ${className}`}>{children}</button>
-  )
-}
+    <button onClick={onClick} className={`${s.root} ${className}`}>
+      {children}
+    </button>
+  );
+};
