@@ -2,7 +2,6 @@
 
 import { Button } from "@/ui";
 import React, { useState } from "react";
-import Card from "../Card/Card";
 import Board from "../Board/Board";
 
 // const cardIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -52,8 +51,8 @@ const Game = () => {
       .sort(() => Math.random() - 0.5)
       .map((card) => ({ ...card, id: Math.random() }));
 
-    setChoiceOne(null);
-    setChoiceTwo(null);
+    // setChoiceOne(null);
+    // setChoiceTwo(null);
     setCards(shuffledCards);
     setTurns(0);
   };

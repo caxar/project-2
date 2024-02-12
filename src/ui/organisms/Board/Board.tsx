@@ -33,7 +33,7 @@ const Board = ({
             key={card.id}
             item={card}
             handleChoice={handleChoice}
-            flipped={card === choiceOne || card === choiceTwo}
+            flipped={card === choiceOne || card === choiceTwo || card.matched}
             disabled={disabled}
           />
         )
