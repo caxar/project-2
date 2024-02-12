@@ -11,16 +11,21 @@ interface CardProps {
     src?: string | null | undefined;
   }) => void;
   flipped?: boolean;
+  disabled?: boolean;
 }
 
-const Card = ({ item, handleChoice, flipped }: CardProps) => {
+const Card = ({ item, handleChoice, flipped, disabled }: CardProps) => {
   const handleClick = () => {
-    handleChoice(item);
+    // Что бы не делать множественный выбор если не true ждем пока
+    // закончится сессия выбора
+    if (!disabled) {
+      handleChoice(item);
+    }
   };
 
   return (
     <div className={`card relative`}>
-      <div className={`card-wrapper w-[120px]`}>
+      <div className={`card-wrapper w-[150px]`}>
         <img
           className={`front w-[100%] block  ${s.front} ${
             flipped ? s.flipped : ""
@@ -30,7 +35,9 @@ const Card = ({ item, handleChoice, flipped }: CardProps) => {
         />
         <img
           onClick={handleClick}
-          className="back w-[100%] block"
+          className={`back w-[100%] block ${s.back} ${
+            flipped ? s.back_flipped : ""
+          }`}
           src="/backside.png"
           alt="Задняя сторона"
         />

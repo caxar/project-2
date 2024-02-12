@@ -30,6 +30,8 @@ const Game = () => {
   const [choiceOne, setChoiceOne] = React.useState<any>();
   const [choiceTwo, setChoiceTwo] = React.useState<any>();
 
+  const [disbled, setDesabled] = React.useState(false);
+
   // выбранная карточка
   const handleChoice = (card: {
     id?: React.Key | null | undefined;
@@ -41,6 +43,11 @@ const Game = () => {
   // console.log(cards, turns);
 
   // Функция перемешивания карточек и добавление id
+
+  React.useEffect(() => {
+    shuffleCards();
+  }, []);
+
   const shuffleCards = () => {
     // создание массива с одинаковыми карточками и разным id
     const shuffledCards = [...cardImages, ...cardImages]
@@ -56,11 +63,13 @@ const Game = () => {
     setChoiceOne(null);
     setChoiceTwo(null);
     setTurns((prevTurns) => prevTurns + 1);
+    setDesabled(false);
   };
 
   // сравнение выбранных карт при обновлении комопнента и следим за их изменением
   React.useEffect(() => {
     if (choiceOne && choiceTwo) {
+      setDesabled(true);
       // Если у выбранных карточек совпадают src то запуск завершения хода
       if (choiceOne.src === choiceTwo.src) {
         // Возвращаем новый массив карточек
@@ -80,7 +89,8 @@ const Game = () => {
       } else {
         // Если не совпадают то запуск завершение хода
         console.log("Не совпадают");
-        resetTurn();
+        // задержка обратного разворота карточек при неверном выборе
+        setTimeout(resetTurn, 1000);
       }
     }
   }, [choiceOne, choiceTwo]);
@@ -89,18 +99,23 @@ const Game = () => {
 
   return (
     <div className="gameflex container py-4">
-      <div className="game-wrapper flex justify-center items-center flex-col ">
-        <div className="game-title text-[35px] font-bold uppercase">
-          Игра на память
+      <div className="game-wrapper flex justify-center items-center gap-[40px]">
+        <div className="top flex items-center flex-col">
+          <div className="game-title text-[35px] font-bold uppercase">
+            Мемо Сказки
+          </div>
+          <Button onClick={shuffleCards}>Новая игра</Button>
         </div>
-        <Button onClick={shuffleCards}>Начать игру</Button>
-        <Board
-          cards={cards}
-          handleChoice={handleChoice}
-          choiceOne={choiceOne}
-          choiceTwo={choiceTwo}
-          // matched={matched}
-        />
+        <div className="bottom">
+          <Board
+            cards={cards}
+            handleChoice={handleChoice}
+            choiceOne={choiceOne}
+            choiceTwo={choiceTwo}
+            // matched={matched}
+            disabled={disbled}
+          />
+        </div>
       </div>
     </div>
   );

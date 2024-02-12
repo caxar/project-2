@@ -14,6 +14,7 @@ interface BoardProps {
   choiceOne?: {};
   choiceTwo?: {};
   matched?: any;
+  disabled?: boolean;
 }
 
 const Board = ({
@@ -22,9 +23,10 @@ const Board = ({
   choiceOne,
   choiceTwo,
   matched,
+  disabled,
 }: BoardProps) => {
   return (
-    <div className="card-grid grid grid-cols-4 gap-[15px] mt-[60px]">
+    <div className="card-grid grid grid-cols-4 gap-[15px]">
       {cards.map(
         (card: { matched: boolean; id: React.Key | null | undefined }) => (
           <Card
@@ -32,6 +34,7 @@ const Board = ({
             item={card}
             handleChoice={handleChoice}
             flipped={card === choiceOne || card === choiceTwo || card.matched}
+            disabled={disabled}
           />
         )
       )}
