@@ -11,14 +11,14 @@ import Board from "../Board/Board";
 
 // Массив картинок
 const cardImages = [
-  { src: "/1.png" },
-  { src: "/2.png" },
-  { src: "/3.png" },
-  { src: "/4.png" },
-  { src: "/5.png" },
-  { src: "/6.png" },
-  { src: "/7.png" },
-  { src: "/8.png" },
+  { src: "/1.png", matched: false },
+  { src: "/2.png", matched: false },
+  { src: "/3.png", matched: false },
+  { src: "/4.png", matched: false },
+  { src: "/5.png", matched: false },
+  { src: "/6.png", matched: false },
+  { src: "/7.png", matched: false },
+  { src: "/8.png", matched: false },
 ];
 
 const Game = () => {
@@ -38,7 +38,7 @@ const Game = () => {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
 
-  console.log(cards, turns);
+  // console.log(cards, turns);
 
   // Функция перемешивания карточек и добавление id
   const shuffleCards = () => {
@@ -52,7 +52,6 @@ const Game = () => {
   };
 
   // Сброс выбранной карты и ходов
-
   const resetTurn = () => {
     setChoiceOne(null);
     setChoiceTwo(null);
@@ -60,7 +59,33 @@ const Game = () => {
   };
 
   // сравнение выбранных карт при обновлении комопнента и следим за их изменением
-  React.useEffect(() => {}, [choiceOne, choiceTwo]);
+  React.useEffect(() => {
+    if (choiceOne && choiceTwo) {
+      // Если у выбранных карточек совпадают src то запуск завершения хода
+      if (choiceOne.src === choiceTwo.src) {
+        // Возвращаем новый массив карточек
+        setCards((prevCards: any[]) => {
+          // проходим по нему и возвращаем объект внутри массива
+          return prevCards.map((card) => {
+            // если совпадают тогда возвращаем новый массив объектов и у выбранных карточек совпадение true
+            if (card.src === choiceOne.src) {
+              return { ...card, matched: true };
+            } else {
+              return card;
+            }
+          });
+        });
+        console.log("совпадают");
+        resetTurn();
+      } else {
+        // Если не совпадают то запуск завершение хода
+        console.log("Не совпадают");
+        resetTurn();
+      }
+    }
+  }, [choiceOne, choiceTwo]);
+
+  console.log(cards);
 
   return (
     <div className="gameflex container py-4">
@@ -69,7 +94,13 @@ const Game = () => {
           Игра на память
         </div>
         <Button onClick={shuffleCards}>Начать игру</Button>
-        <Board cards={cards} handleChoice={handleChoice} />
+        <Board
+          cards={cards}
+          handleChoice={handleChoice}
+          choiceOne={choiceOne}
+          choiceTwo={choiceTwo}
+          // matched={matched}
+        />
       </div>
     </div>
   );

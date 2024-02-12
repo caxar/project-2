@@ -11,14 +11,30 @@ interface BoardProps {
     id?: React.Key | null | undefined;
     src?: string | null | undefined;
   }) => void;
+  choiceOne?: {};
+  choiceTwo?: {};
+  matched?: any;
 }
 
-const Board = ({ cards, handleChoice }: BoardProps) => {
+const Board = ({
+  cards,
+  handleChoice,
+  choiceOne,
+  choiceTwo,
+  matched,
+}: BoardProps) => {
   return (
-    <div className="card-grid grid grid-cols-4 gap-[30px] mt-[60px]">
-      {cards.map((card: { id: React.Key | null | undefined }) => (
-        <Card key={card.id} item={card} handleChoice={handleChoice} />
-      ))}
+    <div className="card-grid grid grid-cols-4 gap-[15px] mt-[60px]">
+      {cards.map(
+        (card: { matched: boolean; id: React.Key | null | undefined }) => (
+          <Card
+            key={card.id}
+            item={card}
+            handleChoice={handleChoice}
+            flipped={card === choiceOne || card === choiceTwo || card.matched}
+          />
+        )
+      )}
     </div>
   );
 };

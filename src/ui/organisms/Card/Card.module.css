@@ -1,0 +1,8 @@
+.front {
+  transform: rotateY(90deg);
+  position: absolute;
+}
+
+.flipped {
+  transform: rotateY(0deg);
+}

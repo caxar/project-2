@@ -1,4 +1,5 @@
 import React from "react";
+import s from "./Card.module.css";
 
 interface CardProps {
   item: {
@@ -9,18 +10,21 @@ interface CardProps {
     id?: React.Key | null | undefined;
     src?: string | null | undefined;
   }) => void;
+  flipped?: boolean;
 }
 
-const Card = ({ item, handleChoice }: CardProps) => {
+const Card = ({ item, handleChoice, flipped }: CardProps) => {
   const handleClick = () => {
     handleChoice(item);
   };
 
   return (
-    <div className="card relative">
-      <div className="card-wrapper">
+    <div className={`card relative`}>
+      <div className={`card-wrapper w-[120px]`}>
         <img
-          className="front w-[100%] block"
+          className={`front w-[100%] block  ${s.front} ${
+            flipped ? s.flipped : ""
+          }`}
           src={`${item.src}`}
           alt={`Лицевая сторона`}
         />
