@@ -40,13 +40,11 @@ const Game = () => {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
 
-  // console.log(cards, turns);
-
-  // Функция перемешивания карточек и добавление id
-
   React.useEffect(() => {
     shuffleCards();
   }, []);
+
+  // Функция перемешивания карточек и добавление id
 
   const shuffleCards = () => {
     // создание массива с одинаковыми карточками и разным id
@@ -54,6 +52,8 @@ const Game = () => {
       .sort(() => Math.random() - 0.5)
       .map((card) => ({ ...card, id: Math.random() }));
 
+    setChoiceOne(null);
+    setChoiceTwo(null);
     setCards(shuffledCards);
     setTurns(0);
   };
@@ -98,24 +98,22 @@ const Game = () => {
   console.log(cards);
 
   return (
-    <div className="gameflex container py-4">
-      <div className="game-wrapper flex justify-center items-center gap-[40px]">
-        <div className="top flex items-center flex-col">
-          <div className="game-title text-[35px] font-bold uppercase">
-            Мемо Сказки
-          </div>
-          <Button onClick={shuffleCards}>Новая игра</Button>
+    <div className="game-wrapper flex justify-center items-center gap-[40px]">
+      <div className="top flex items-center flex-col">
+        <div className="game-title text-[35px] font-bold uppercase">
+          Мемо Сказки
         </div>
-        <div className="bottom">
-          <Board
-            cards={cards}
-            handleChoice={handleChoice}
-            choiceOne={choiceOne}
-            choiceTwo={choiceTwo}
-            // matched={matched}
-            disabled={disbled}
-          />
-        </div>
+        <Button onClick={shuffleCards}>Новая игра</Button>
+        <div className="text-[18px] mt-2">Ходов: {turns}</div>
+      </div>
+      <div className="bottom">
+        <Board
+          cards={cards}
+          handleChoice={handleChoice}
+          choiceOne={choiceOne}
+          choiceTwo={choiceTwo}
+          disabled={disbled}
+        />
       </div>
     </div>
   );
