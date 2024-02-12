@@ -3,7 +3,7 @@ import s from "./Button.module.css";
 interface ButtonProps {
   className?: string;
   children?: string | JSX.Element | "Next";
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const Button = ({ className, children, onClick }: ButtonProps) => {

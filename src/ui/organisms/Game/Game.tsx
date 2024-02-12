@@ -1,8 +1,11 @@
 "use client";
+import React, { useState } from "react";
+
+import { TbReload } from "react-icons/tb";
 
 import { Button } from "@/ui";
-import React, { useState } from "react";
 import Board from "../Board/Board";
+import Result from "../Result/Result";
 
 // const cardIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 // cardIds.sort(() => 0.5 - Math.random());
@@ -29,7 +32,10 @@ const Game = () => {
   const [choiceOne, setChoiceOne] = React.useState<any>();
   const [choiceTwo, setChoiceTwo] = React.useState<any>();
 
+  // отладка что что пока не прозойдет проверка не выбирать новые карточки
   const [disbled, setDesabled] = React.useState(false);
+
+  const [showResult, setShowResult] = React.useState(false);
 
   // выбранная карточка
   const handleChoice = (card: {
@@ -43,6 +49,14 @@ const Game = () => {
     shuffleCards();
   }, []);
 
+  React.useEffect(() => {
+    cards.every((it: any) => {
+      if (it.matched === true) {
+        setShowResult(true);
+      }
+    });
+  }, [cards]);
+
   // Функция перемешивания карточек и добавление id
 
   const shuffleCards = () => {
@@ -51,10 +65,11 @@ const Game = () => {
       .sort(() => Math.random() - 0.5)
       .map((card) => ({ ...card, id: Math.random() }));
 
-    // setChoiceOne(null);
-    // setChoiceTwo(null);
+    setChoiceOne(null);
+    setChoiceTwo(null);
     setCards(shuffledCards);
     setTurns(0);
+    setShowResult(false);
   };
 
   // Сброс выбранной карты и ходов
@@ -97,24 +112,29 @@ const Game = () => {
   console.log(cards);
 
   return (
-    <div className="game-wrapper flex justify-center items-center gap-[40px]">
-      <div className="top flex items-center flex-col">
-        <div className="game-title text-[35px] font-bold uppercase">
-          Мемо Сказки
+    <>
+      <div className="game-wrapper flex justify-center items-center gap-[40px]">
+        <div className="top flex items-center flex-col">
+          <div className="game-title text-[35px] font-bold uppercase">
+            Мемо Сказки
+          </div>
+          <Button onClick={shuffleCards} className="bg-orange-500">
+            Новая игра <TbReload />
+          </Button>
+          <div className="text-[18px] mt-2">Ходов: {turns}</div>
         </div>
-        <Button onClick={shuffleCards}>Новая игра</Button>
-        <div className="text-[18px] mt-2">Ходов: {turns}</div>
+        <div className="bottom">
+          <Board
+            cards={cards}
+            handleChoice={handleChoice}
+            choiceOne={choiceOne}
+            choiceTwo={choiceTwo}
+            disabled={disbled}
+          />
+        </div>
       </div>
-      <div className="bottom">
-        <Board
-          cards={cards}
-          handleChoice={handleChoice}
-          choiceOne={choiceOne}
-          choiceTwo={choiceTwo}
-          disabled={disbled}
-        />
-      </div>
-    </div>
+      {showResult && <Result shuffleCards={shuffleCards} />}
+    </>
   );
 };
 
