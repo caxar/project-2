@@ -6,7 +6,21 @@ interface ResultProps {
   shuffleCards: () => void;
 }
 
+// const score = window.localStorage.getItem("score");
+// const bestScore = window.localStorage.getItem("best-score");
+
 const Result = ({ shuffleCards }: ResultProps) => {
+  const [storedScore, setStoredScore] = React.useState("");
+  const [storedBestScore, setStoredBestScore] = React.useState("");
+
+  React.useEffect(() => {
+    const storedScore = window.localStorage.getItem("score");
+    const storedBestScore = window.localStorage.getItem("best-score");
+
+    setStoredScore(storedScore || "");
+    setStoredBestScore(storedBestScore || "");
+  }, []);
+
   return (
     <div
       className="result-bg fixed h-[100%] w-[100%] bg-black bg-opacity-25 flex items-center
@@ -18,7 +32,8 @@ const Result = ({ shuffleCards }: ResultProps) => {
       shadow-[0_20px_60px_#d4d4d480] "
       >
         <div className="text-[20px] uppercase font-bold">Поздравляем 🎉</div>
-        <div className="">Твой рекорд: 25</div>
+        <div className="">Количество ходов: {storedScore}</div>
+        <div className="">Твой рекорд: {storedBestScore}</div>
         <Button onClick={shuffleCards} className="bg-orange-500">
           Новая игра
         </Button>

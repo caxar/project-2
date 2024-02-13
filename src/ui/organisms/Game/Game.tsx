@@ -1,8 +1,6 @@
 "use client";
 import React, { useState } from "react";
 
-import { TbReload } from "react-icons/tb";
-
 import { Button } from "@/ui";
 import Board from "../Board/Board";
 import Result from "../Result/Result";
@@ -29,13 +27,18 @@ const Game = () => {
   // массив всех перевернутых карточек
   const [turns, setTurns] = React.useState(0);
 
+  // Выбор карточек за ход для сравнение
   const [choiceOne, setChoiceOne] = React.useState<any>();
   const [choiceTwo, setChoiceTwo] = React.useState<any>();
 
   // отладка что что пока не прозойдет проверка не выбирать новые карточки
   const [disbled, setDesabled] = React.useState(false);
 
+  // Показываем окно с результатом игры
   const [showResult, setShowResult] = React.useState(false);
+
+  // Прошлый счет игры
+  const [prevScore, setPrevScore] = React.useState(0);
 
   // выбранная карточка
   const handleChoice = (card: {
@@ -45,22 +48,34 @@ const Game = () => {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
 
+  // Запуск игры при первой загрузки
   React.useEffect(() => {
     shuffleCards();
+
+    // Получаем прошлый счет игры
+    const storedScore = localStorage.getItem("best-score");
+    // преобразуем в числовый тип
+    if (storedScore) {
+      setPrevScore(parseInt(storedScore));
+    }
   }, []);
 
+  // Если все картоки true то вывод сообщения о конце игры
   React.useEffect(() => {
-    cards.every((item: any) => {
-      if (item.matched === true) {
-        setShowResult(true);
-      } else {
-        setShowResult(false);
+    const allMatchedCards = cards.every((item: any) => item.matched === true);
+
+    if (allMatchedCards) {
+      setShowResult(true);
+      window.localStorage.setItem("score", turns.toString());
+      if (turns > prevScore) {
+        window.localStorage.setItem("best-score", turns.toString());
       }
-    });
+    } else {
+      setShowResult(false);
+    }
   }, [cards]);
 
   // Функция перемешивания карточек и добавление id
-
   const shuffleCards = () => {
     // создание массива с одинаковыми карточками и разным id
     const shuffledCards = [...cardImages, ...cardImages]
@@ -126,7 +141,9 @@ const Game = () => {
           >
             Новая игра
           </Button>
-          <div className="text-[18px] mt-2 text-[20px]">Ходов: {turns}</div>
+          <div className="text-[18px] mt-2 text-[20px]">
+            Количество ходов: {turns}
+          </div>
         </div>
         <div className="bottom">
           <Board

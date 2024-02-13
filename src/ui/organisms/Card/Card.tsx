@@ -25,7 +25,9 @@ const Card = ({ item, handleChoice, flipped, disabled }: CardProps) => {
 
   return (
     <div className={`card relative`}>
-      <div className={`card-wrapper w-[150px] cursor-pointer`}>
+      <div
+        className={`card-wrapper w-[150px] cursor-pointer transition hover:scale-105`}
+      >
         <img
           className={`front w-[100%] block  ${s.front} ${
             flipped ? s.flipped : ""
