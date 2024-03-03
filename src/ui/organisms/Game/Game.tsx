@@ -60,16 +60,15 @@ const Game = () => {
     }
   }, []);
 
-  // Если все картоки true то вывод сообщения о конце игры
+  // Если все картоки true то вывод сообщения о завершение игры
   React.useEffect(() => {
+    // если каждая карточка в миссева имеет статус true тогда конец игры
     const allMatchedCards = cards.every((item: any) => item.matched === true);
 
+    // если игра окончена тогда запуск подсчета ходов
     if (allMatchedCards) {
       setShowResult(true);
       window.localStorage.setItem("score", turns.toString());
-      if (turns > prevScore) {
-        window.localStorage.setItem("best-score", turns.toString());
-      }
     } else {
       setShowResult(false);
     }
@@ -125,8 +124,6 @@ const Game = () => {
       }
     }
   }, [choiceOne, choiceTwo]);
-
-  console.log(cards);
 
   return (
     <>

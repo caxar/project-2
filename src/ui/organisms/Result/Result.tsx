@@ -33,7 +33,7 @@ const Result = ({ shuffleCards }: ResultProps) => {
       >
         <div className="text-[20px] uppercase font-bold">Поздравляем 🎉</div>
         <div className="">Количество ходов: {storedScore}</div>
-        <div className="">Твой рекорд: {storedBestScore}</div>
+        {/* <div className="">Твой рекорд: {storedBestScore}</div> */}
         <Button onClick={shuffleCards} className="bg-orange-500">
           Новая игра
         </Button>
